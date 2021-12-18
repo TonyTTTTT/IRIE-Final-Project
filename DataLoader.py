@@ -7,7 +7,12 @@ class DataLoader:
         self.query = None
         self.doc = None
         self.excludes = ['of', 'with', 'for', 'to', 'A', 'on', 'a', 'and', 'has', 'who', 'was', 'by', 'in', 'or', 'at',
-                        'had', 'the', 'An', 'an']
+                         'had', 'the', 'An', 'an', 'were', 'The', 'it', 'those', 'when', 'then', 'than', 'that', 'are',
+                         'is', 'did', 'be', 'This', 'In', 'which', 'from', 'as', 'they', 'this', 'we', 'can', 'have']
+        self.intab = '.!?,'
+        self.outtab = '    '
+        self.trantab = str.maketrans(self.intab, self.outtab)
+
     def createRoot(self, path):
         tree = ET.parse(path)
         root = tree.getroot()
@@ -19,13 +24,37 @@ class DataLoader:
         root = self.createRoot(path)
         self.query = root[2].text.split(' ')
         for d in self.query:
+            d = d.translate(self.trantab).strip()
             if d == '':
                 self.query.remove('')
             for exclude in self.excludes:
                 if d == exclude:
-                    self.query.remove(exclude)
+                    self.query.remove(d)
+
 
         return self.query
+
+    def loadDocTxt(self, path):
+        with open(path, 'r') as f:
+            txt = f.read()
+            cnt = 0
+            while True:
+                if cnt == len(txt):
+                    break
+                if txt[cnt] == '<':
+                    while txt[cnt] != '>':
+                        txt = txt[:cnt] + txt[cnt + 1:]
+                    txt = txt[:cnt] + txt[cnt + 1:]
+                else:
+                    cnt += 1
+        txt = txt.replace('\n', '').replace('\t', '')
+        self.doc = txt.split(' ')
+        for d in self.doc:
+            for exclude in self.excludes:
+                if d == exclude:
+                    self.doc.remove(d)
+
+        return self.doc
 
     def loadDoc(self, path):
         root = self.createRoot(path)
@@ -35,7 +64,11 @@ class DataLoader:
                 line = node.text.replace('\n', ' ').replace('\t', '')
                 for token in line.split(' '):
                     if token != '':
-                        self.doc.append(token)
+                        self.doc.append(token.translate(self.trantab).strip())
+        for d in self.doc:
+            for exclude in self.excludes:
+                if d == exclude:
+                    self.doc.remove(d)
 
         return self.doc
 
@@ -43,14 +76,17 @@ class DataLoader:
 if __name__ == '__main__':
     dataLoader = DataLoader()
 
-    queries = []
-    for f in os.listdir('../ntu-2021fall-ir/train_query'):
-        summary = dataLoader.loadQuery('../ntu-2021fall-ir/train_query/'+f)
-        print('{}: {}'.format(f, summary))
-        queries.append(summary)
-
+    # queries = []
+    # for f in os.listdir('../ntu-2021fall-ir/train_query'):
+    #     summary = dataLoader.loadQuery('../ntu-2021fall-ir/train_query/'+f)
+    #     print('{}: {}'.format(f, summary))
+    #     queries.append(summary)
+    q = dataLoader.loadQuery('../ntu-2021fall-ir/test_query/29')
     # doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/13915')
-    docs = []
-    for f in os.listdir('../ntu-2021fall-ir/doc'):
-        doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/'+f)
-        docs.append(doc)
+    # docs = []
+    # for f in os.listdir('../ntu-2021fall-ir/doc'):
+    #     doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/'+f)
+    #     docs.append(doc)
+    doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/29012')
+    docTxt = dataLoader.loadDocTxt('../ntu-2021fall-ir/doc/29012')
+    print('')

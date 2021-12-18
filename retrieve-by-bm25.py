@@ -7,25 +7,29 @@ from DataLoader import DataLoader
 if __name__ == '__main__':
     dataLoader = DataLoader()
 
+    print('loading queries...')
     queries = {}
     for f in os.listdir('../ntu-2021fall-ir/test_query'):
         summary = dataLoader.loadQuery('../ntu-2021fall-ir/test_query/'+f)
         # print('{}: {}'.format(f, summary))
         queries[f] = summary
         # queries.append(summary)
+    print('queries loaded.')
 
     docs = []
     docsId = []
     cnt = 0
+    print('loading docs...')
     for f in os.listdir('../ntu-2021fall-ir/doc'):
         # print(f, end=' ')
         docsId.append(f)
-        doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/'+f)
+        doc = dataLoader.loadDocTxt('../ntu-2021fall-ir/doc/'+f)
         docs.append(doc)
         # cnt += 1
         # if cnt == 10:
         #     break
     # print()
+    print('docs loaded.')
 
     # docsFor11 = []
     # testFor11 = [1892007, 2275746, 2503962, 2516438, 2688349, 2762967, 2774488, 2780824, 2785867, 2796644]
@@ -39,6 +43,7 @@ if __name__ == '__main__':
     csvFile = open('test_predict.csv', 'w', newline='')
     writer = csv.writer(csvFile)
     writer.writerow(['topic','doc'])
+    print('start matching...')
     for key in queries:
         score = bm25.get_scores(queries.get(key))
         score = np.array(score)
@@ -55,3 +60,4 @@ if __name__ == '__main__':
         writer.writerow([key, np.array2string(predictFile).replace('\n', '')[1:-1]])
         # print('{}: {}'.format(key, scoreFor11))
     csvFile.close()
+    print('complete! ')
