@@ -26,9 +26,9 @@ if __name__ == '__main__':
         docsId.append(f)
         doc = dataLoader.loadDocTxt(prefix + 'ntu-2021fall-ir/doc/'+f)
         docs.append(doc)
-        cnt += 1
-        if cnt == 100:
-            break
+        # cnt += 1
+        # if cnt == 100:
+        #     break
     # print()
     print('docs loaded.')
 
