@@ -4,13 +4,14 @@ import numpy as np
 import csv
 from DataLoader import DataLoader
 
+prefix = '../../'
 if __name__ == '__main__':
     dataLoader = DataLoader()
 
     print('loading queries...')
     queries = {}
-    for f in os.listdir('../ntu-2021fall-ir/test_query'):
-        summary = dataLoader.loadQuery('../ntu-2021fall-ir/test_query/'+f)
+    for f in os.listdir(prefix + 'ntu-2021fall-ir/test_query'):
+        summary = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/test_query/'+f)
         # print('{}: {}'.format(f, summary))
         queries[f] = summary
         # queries.append(summary)
@@ -20,14 +21,14 @@ if __name__ == '__main__':
     docs = []
     docsId = []
     cnt = 0
-    for f in os.listdir('../ntu-2021fall-ir/doc'):
+    for f in os.listdir(prefix + 'ntu-2021fall-ir/doc'):
         # print(f, end=' ')
         docsId.append(f)
-        doc = dataLoader.loadDocTxt('../ntu-2021fall-ir/doc/'+f)
+        doc = dataLoader.loadDocTxt(prefix + 'ntu-2021fall-ir/doc/'+f)
         docs.append(doc)
-        # cnt += 1
-        # if cnt == 100:
-        #     break
+        cnt += 1
+        if cnt == 100:
+            break
     # print()
     print('docs loaded.')
 

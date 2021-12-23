@@ -82,20 +82,21 @@ class DataLoader:
         return self.doc
 
 
+prefix = '../../'
 if __name__ == '__main__':
     dataLoader = DataLoader()
 
     # queries = []
-    # for f in os.listdir('../ntu-2021fall-ir/train_query'):
-    #     summary = dataLoader.loadQuery('../ntu-2021fall-ir/train_query/'+f)
+    # for f in os.listdir(prefix + 'ntu-2021fall-ir/train_query'):
+    #     summary = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/train_query/'+f)
     #     print('{}: {}'.format(f, summary))
     #     queries.append(summary)
-    q = dataLoader.loadQuery('../ntu-2021fall-ir/test_query/29')
-    # doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/13915')
+    q = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/test_query/29')
+    # doc = dataLoader.loadDoc(prefix + 'ntu-2021fall-ir/doc/13915')
     # docs = []
-    # for f in os.listdir('../ntu-2021fall-ir/doc'):
-    #     doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/'+f)
+    # for f in os.listdir(prefix + 'ntu-2021fall-ir/doc'):
+    #     doc = dataLoader.loadDoc(prefix + 'ntu-2021fall-ir/doc/'+f)
     #     docs.append(doc)
-    doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/29012')
-    docTxt = dataLoader.loadDocTxt('../ntu-2021fall-ir/doc/29012')
+    doc = dataLoader.loadDoc(prefix + 'ntu-2021fall-ir/doc/29012')
+    docTxt = dataLoader.loadDocTxt(prefix + 'ntu-2021fall-ir/doc/29012')
     print('')
