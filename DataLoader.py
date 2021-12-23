@@ -8,10 +8,17 @@ class DataLoader:
         self.doc = None
         self.excludes = ['of', 'with', 'for', 'to', 'A', 'on', 'a', 'and', 'has', 'who', 'was', 'by', 'in', 'or', 'at',
                          'had', 'the', 'An', 'an', 'were', 'The', 'it', 'those', 'when', 'then', 'than', 'that', 'are',
-                         'is', 'did', 'be', 'This', 'In', 'which', 'from', 'as', 'they', 'this', 'we', 'can', 'have']
+                         'is', 'did', 'be', 'This', 'In', 'which', 'from', 'as', 'they', 'this', 'we', 'can', 'have',
+                         'his', 'her', 'he', 'she', 'not', '', 'There']
         self.intab = '.!?,'
         self.outtab = '    '
         self.trantab = str.maketrans(self.intab, self.outtab)
+
+    def filterFunc(self, s):
+        for exclude in self.excludes:
+            if s == exclude:
+                return False
+        return True
 
     def createRoot(self, path):
         tree = ET.parse(path)
@@ -22,15 +29,15 @@ class DataLoader:
     # return a list of string that is the <summary> in data at path
     def loadQuery(self, path):
         root = self.createRoot(path)
-        self.query = root[2].text.split(' ')
+        self.query = root[1].text.split(' ')
         for d in self.query:
             d = d.translate(self.trantab).strip()
             if d == '':
                 self.query.remove('')
-            for exclude in self.excludes:
-                if d == exclude:
-                    self.query.remove(d)
-
+            # for exclude in self.excludes:
+            #     if d == exclude:
+            #         self.query.remove(d)
+        self.query = list(filter(self.filterFunc, self.query))
 
         return self.query
 
@@ -49,10 +56,11 @@ class DataLoader:
                     cnt += 1
         txt = txt.replace('\n', '').replace('\t', '')
         self.doc = txt.split(' ')
-        for d in self.doc:
-            for exclude in self.excludes:
-                if d == exclude:
-                    self.doc.remove(d)
+        # for d in self.doc:
+        #     for exclude in self.excludes:
+        #         if d == exclude:
+        #             self.doc.remove(d)
+        self.doc = list(filter(self.filterFunc, self.doc))
 
         return self.doc
 
@@ -65,10 +73,11 @@ class DataLoader:
                 for token in line.split(' '):
                     if token != '':
                         self.doc.append(token.translate(self.trantab).strip())
-        for d in self.doc:
-            for exclude in self.excludes:
-                if d == exclude:
-                    self.doc.remove(d)
+        # for d in self.doc:
+        #     for exclude in self.excludes:
+        #         if d == exclude:
+        #             self.doc.remove(d)
+        self.doc = list(filter(self.filterFunc, self.doc))
 
         return self.doc
 

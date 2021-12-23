@@ -16,38 +16,31 @@ if __name__ == '__main__':
         # queries.append(summary)
     print('queries loaded.')
 
+    print('loading docs...')
     docs = []
     docsId = []
     cnt = 0
-    print('loading docs...')
     for f in os.listdir('../ntu-2021fall-ir/doc'):
         # print(f, end=' ')
         docsId.append(f)
         doc = dataLoader.loadDocTxt('../ntu-2021fall-ir/doc/'+f)
         docs.append(doc)
         # cnt += 1
-        # if cnt == 10:
+        # if cnt == 100:
         #     break
     # print()
     print('docs loaded.')
 
-    # docsFor11 = []
-    # testFor11 = [1892007, 2275746, 2503962, 2516438, 2688349, 2762967, 2774488, 2780824, 2785867, 2796644]
-    # for f in testFor11:
-    #     doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/' + str(f))
-    #     docsFor11.append(doc)
-    # doc = dataLoader.loadDoc('../ntu-2021fall-ir/doc/2740164')
+    # dict(sorted(bm25.doc_freqs[0].items(), key=lambda item: item[1], reverse=True))
 
+    print('start matching...')
     bm25 = BM25(docs)
-    # bm25For11 = BM25(docsFor11)
     csvFile = open('test_predict.csv', 'w', newline='')
     writer = csv.writer(csvFile)
     writer.writerow(['topic','doc'])
-    print('start matching...')
     for key in queries:
         score = bm25.get_scores(queries.get(key))
         score = np.array(score)
-        # scoreFor11 = bm25For11.get_scores(queries.get(key))
         print('{}: '.format(key), end=' ')
         predict = np.flip(score.argsort())[:50]
         predictFile = np.zeros(predict.shape, dtype=int)
