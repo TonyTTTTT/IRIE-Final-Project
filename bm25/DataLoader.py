@@ -9,7 +9,7 @@ class DataLoader:
         self.excludes = ['of', 'with', 'for', 'to', 'A', 'on', 'a', 'and', 'has', 'who', 'was', 'by', 'in', 'or', 'at',
                          'had', 'the', 'An', 'an', 'were', 'The', 'it', 'those', 'when', 'then', 'than', 'that', 'are',
                          'is', 'did', 'be', 'This', 'In', 'which', 'from', 'as', 'they', 'this', 'we', 'can', 'have',
-                         'his', 'her', 'he', 'she', 'not', '', 'There']
+                         'his', 'her', 'he', 'she', 'not', '', 'There', '\n']
         self.intab = '.!?,'
         self.outtab = '    '
         self.trantab = str.maketrans(self.intab, self.outtab)
@@ -29,11 +29,10 @@ class DataLoader:
     # return a list of string that is the <summary> in data at path
     def loadQuery(self, path):
         root = self.createRoot(path)
-        self.query = root[1].text.split(' ')
-        for d in self.query:
-            d = d.translate(self.trantab).strip()
-            if d == '':
-                self.query.remove('')
+        self.query = root[0].text.split(' ')
+        for i in range(len(self.query)):
+            self.query[i] = self.query[i].translate(self.trantab).strip()
+            # d = d.replace('\n', '')
             # for exclude in self.excludes:
             #     if d == exclude:
             #         self.query.remove(d)
@@ -86,12 +85,12 @@ prefix = '../../'
 if __name__ == '__main__':
     dataLoader = DataLoader()
 
-    # queries = []
-    # for f in os.listdir(prefix + 'ntu-2021fall-ir/train_query'):
-    #     summary = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/train_query/'+f)
-    #     print('{}: {}'.format(f, summary))
-    #     queries.append(summary)
-    q = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/test_query/29')
+    queries = []
+    for f in os.listdir(prefix + 'ntu-2021fall-ir/train_query'):
+        summary = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/train_query/'+f)
+        print('{}: {}'.format(f, summary))
+        queries.append(summary)
+    # q = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/test_query/29')
     # doc = dataLoader.loadDoc(prefix + 'ntu-2021fall-ir/doc/13915')
     # docs = []
     # for f in os.listdir(prefix + 'ntu-2021fall-ir/doc'):
