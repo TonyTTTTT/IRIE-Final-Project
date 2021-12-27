@@ -29,7 +29,7 @@ class DataLoader:
     # return a list of string that is the <summary> in data at path
     def loadQuery(self, path):
         root = self.createRoot(path)
-        self.query = root[0].text.split(' ')
+        self.query = root[2].text.split(' ')
         for i in range(len(self.query)):
             self.query[i] = self.query[i].translate(self.trantab).strip()
             # d = d.replace('\n', '')
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     dataLoader = DataLoader()
 
     queries = []
-    for f in os.listdir(prefix + 'ntu-2021fall-ir/train_query'):
-        summary = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/train_query/'+f)
+    for f in os.listdir(prefix + 'ntu-2021fall-ir/test_query'):
+        summary = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/test_query/'+f)
         print('{}: {}'.format(f, summary))
         queries.append(summary)
     # q = dataLoader.loadQuery(prefix + 'ntu-2021fall-ir/test_query/29')
