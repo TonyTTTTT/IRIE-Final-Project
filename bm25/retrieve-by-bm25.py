@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     print('start matching...')
     bm25 = BM25(docs, b=0.75, k1=1.5)
-    csvFile = open('test_predict.csv', 'w', newline='')
+    csvFile = open('test_predict_new_stop_word_b075.csv', 'w', newline='')
     writer = csv.writer(csvFile)
     writer.writerow(['topic','doc'])
     for key in queries:

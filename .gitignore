@@ -3,3 +3,4 @@
 test.py
 **/test_predict*.csv
 **/train_predict*.csv
+*.pkl

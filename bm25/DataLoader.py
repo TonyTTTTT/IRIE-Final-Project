@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 import os
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 
 class DataLoader:
     def __init__(self):
@@ -71,6 +71,29 @@ class DataLoader:
 
         return self.query
 
+    def loadDocStr(self, path):
+        with open(path, 'r') as f:
+            txt = f.read()
+            cnt = 0
+            while True:
+                if cnt == len(txt):
+                    break
+                if txt[cnt] == '<':
+                    while txt[cnt] != '>':
+                        txt = txt[:cnt] + txt[cnt + 1:]
+                    txt = txt[:cnt] + txt[cnt + 1:]
+                else:
+                    cnt += 1
+        txt = txt.replace('\n', '').replace('\t', '')
+        self.doc = txt
+        # for d in self.doc:
+        #     for exclude in self.excludes:
+        #         if d == exclude:
+        #             self.doc.remove(d)
+        # self.doc = list(filter(self.filterFunc, self.doc))
+
+        return self.doc
+
     def loadDocTxt(self, path):
         with open(path, 'r') as f:
             txt = f.read()
@@ -90,7 +113,7 @@ class DataLoader:
         #     for exclude in self.excludes:
         #         if d == exclude:
         #             self.doc.remove(d)
-        self.doc = list(filter(self.filterFunc, self.doc))
+        # self.doc = list(filter(self.filterFunc, self.doc))
 
         return self.doc
 
