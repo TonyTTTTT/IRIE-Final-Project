@@ -21,3 +21,6 @@ for f in os.listdir(prefix + 'ntu-2021fall-ir/doc'):
 print('docs loaded.')
 with open('docs-str-wo-filter.pkl', 'wb') as f:
     pickle.dump(docs, f)
+    
+with open('docsId.pkl', 'wb') as f:
+    pickle.dump(docsId, f)

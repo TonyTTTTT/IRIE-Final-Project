@@ -8,6 +8,7 @@ Created on Wed Dec 29 18:45:49 2021
 import os
 from DataLoader import DataLoader
 import pickle
+import numpy as np
 
 prefix = '../../'
 if __name__ == '__main__':
@@ -25,19 +26,34 @@ if __name__ == '__main__':
     print('loading docs...')
     with open('docs-str-wo-filter.pkl', 'rb') as f:
         docs = pickle.load(f)
+    with open('docsId.pkl', 'rb') as f:
+        docsId = pickle.load(f)
     print('docs loaded.')
     
     from sentence_transformers import SentenceTransformer
     from sklearn.metrics.pairwise import cosine_similarity
-    
+    import csv
+
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
     docs_embedding = model.encode(docs)
-    
-    for query in queries:
+    f = open('test_predict_SBERT.csv', 'w')
+    writer =  csv.writer(f)
+    writer.writerow(['topic', 'doc'])
+    for key in queries:
+        print('{}: '.format(key), end=' ')
         sim_ary = []
-        query_embedding = model.encode(query)
+        query_embedding = model.encode([queries.get(key)])
         for i in range(len(docs_embedding)):
             sim = cosine_similarity(query_embedding.reshape(1,-1), 
-                                    docs_embedding[i].reshape(1,-1))
+                                    docs_embedding[i].reshape(1,-1)).item()
             sim_ary.append(sim)
+        sim_ary = np.array(sim_ary)
+        sim_arg_sorted = sim_ary.argsort()[:50]
+        predictFile = np.zeros(sim_arg_sorted.shape, dtype=int)
+        for i in range(sim_arg_sorted.shape[0]):
+            print('{}'.format(docsId[sim_arg_sorted[i]]), end=' ')
+            predictFile[i] = docsId[sim_arg_sorted[i]]
+
+        writer.writerow([key, np.array2string(predictFile).replace('\n', '')[1:-1]])
         
+    f.close()
