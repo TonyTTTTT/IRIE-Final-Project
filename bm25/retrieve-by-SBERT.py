@@ -48,7 +48,7 @@ if __name__ == '__main__':
                                     docs_embedding[i].reshape(1,-1)).item()
             sim_ary.append(sim)
         sim_ary = np.array(sim_ary)
-        sim_arg_sorted = sim_ary.argsort(reversed)[::-1][:50]
+        sim_arg_sorted = sim_ary.argsort()[::-1][:50]
         predictFile = np.zeros(sim_arg_sorted.shape, dtype=int)
         for i in range(sim_arg_sorted.shape[0]):
             print('{}'.format(docsId[sim_arg_sorted[i]]), end=' ')
