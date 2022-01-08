@@ -2,6 +2,7 @@ import xml.etree.ElementTree as ET
 import os
 # from bs4 import BeautifulSoup
 
+
 class DataLoader:
     def __init__(self):
         self.query = None

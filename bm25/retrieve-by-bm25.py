@@ -1,3 +1,4 @@
+import pickle
 from gensim.summarization.bm25 import BM25
 import os
 import numpy as np
@@ -18,18 +19,22 @@ if __name__ == '__main__':
     print('queries loaded.')
 
     print('loading docs...')
-    docs = []
-    docsId = []
-    cnt = 0
-    for f in os.listdir(prefix + 'ntu-2021fall-ir/doc'):
-        # print(f, end=' ')
-        docsId.append(f)
-        doc = dataLoader.loadDocTxt(prefix + 'ntu-2021fall-ir/doc/'+f)
-        docs.append(doc)
-        # cnt += 1
-        # if cnt == 100:
-        #     break
-    # print()
+    with open('docs.pkl', 'rb') as f:
+        docs = pickle.load(f)
+    with open('docsId.pkl', 'rb') as f:
+        docsId = pickle.load(f)
+    # docs = []
+    # docsId = []
+    # cnt = 0
+    # for f in os.listdir(prefix + 'ntu-2021fall-ir/doc'):
+    #     # print(f, end=' ')
+    #     docsId.append(f)
+    #     doc = dataLoader.loadDocTxt(prefix + 'ntu-2021fall-ir/doc/'+f)
+    #     docs.append(doc)
+    #     # cnt += 1
+    #     # if cnt == 100:
+    #     #     break
+    # # print()
     print('docs loaded.')
 
     # dict(sorted(bm25.doc_freqs[0].items(), key=lambda item: item[1], reverse=True))

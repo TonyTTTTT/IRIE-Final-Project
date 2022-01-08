@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
     docs_embedding = model.encode(docs)
-    f = open('test_predict_SBERT.csv', 'w')
+    f = open('test_predict_SBERT.csv', 'w', newline='')
     writer = csv.writer(f)
     writer.writerow(['topic', 'doc'])
     for key in queries:
@@ -48,11 +48,12 @@ if __name__ == '__main__':
                                     docs_embedding[i].reshape(1,-1)).item()
             sim_ary.append(sim)
         sim_ary = np.array(sim_ary)
-        sim_arg_sorted = sim_ary.argsort()[::-1][:50]
+        sim_arg_sorted = np.flip(sim_ary.argsort())[:50]
         predictFile = np.zeros(sim_arg_sorted.shape, dtype=int)
         for i in range(sim_arg_sorted.shape[0]):
             print('{}'.format(docsId[sim_arg_sorted[i]]), end=' ')
             predictFile[i] = docsId[sim_arg_sorted[i]]
+        print()
 
         writer.writerow([key, np.array2string(predictFile).replace('\n', '')[1:-1]])
         
