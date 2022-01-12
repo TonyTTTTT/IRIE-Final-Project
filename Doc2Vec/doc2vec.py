@@ -72,11 +72,10 @@ if __name__ == '__main__':
         # 重設 index
         df_sort.reset_index(inplace=True, drop=True)
 
-        # 取前 50 名，並且大於 threshold
+        # 取前 50 名
         for m in range(50):
-            s = df_sort.at[m, target]
-            if s >= 0.85:
-                score = score + str(df_sort.at[m, "Number"]) + " "
+            score = score + str(df_sort.at[m, "Number"]) + " "
         df_result.at[n, "doc"] = score
         score = ""
     df_result.to_csv("final_ans.csv", index = False)
+
