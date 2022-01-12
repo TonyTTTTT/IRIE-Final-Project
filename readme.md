@@ -15,11 +15,11 @@ and the process will began. At the end of the process, it will output a file nam
 ## Doc2Vec
 - OS: Window 10
 - Python version: 3.10
-- requirement file: in ./doc2vec/doc2vec.requirements.txt
+- requirement file: in ./Doc2Vec/doc2vec.requirements.txt
 ### how to run the code
 just simply type
 ``` shell
-cd doc2vec
+cd Doc2Vec
 python3 data_clean.py
 python3 doc2vec.py 
 ```
