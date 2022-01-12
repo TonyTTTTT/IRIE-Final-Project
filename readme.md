@@ -23,4 +23,4 @@ cd Doc2Vec
 python3 data_clean.py
 python3 doc2vec.py 
 ```
-When all of the processes were executed successfully, it will generate a file named "final_ans.csv".
+When the program were finished successfully, it will generate a file named "final_ans.csv".
